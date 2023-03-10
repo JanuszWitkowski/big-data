@@ -2,7 +2,7 @@ import random
 
 color_values = '0123456789abcdef'
 
-def proper_name (filename):
+def proper_name (filename: str) -> str:
     # name = filename
     name = filename[:-4]
     l = len(name)
