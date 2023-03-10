@@ -3,17 +3,7 @@ import sys
 import re
 from typing import Any, List, Tuple
 from numbers import Number
-
-def proper_name (filename):
-    # name = filename
-    name = filename[:-4]
-    l = len(name)
-    idx = 0
-    while idx < l and name[-idx] != '/':
-        idx += 1
-    if idx == l:
-        return name
-    return name[-idx+1:]
+from utils import proper_name, random_color_string
 
 def open_and_split_file (filename: str):
     with open(filename, 'r') as file:
@@ -49,7 +39,7 @@ def words_to_csv (words_list: List[Tuple[str, Number]], filename: str):
     with open(filename + ".csv", "w") as file:
         file.write("\"weight\";\"word\";\"color\";\"url\"\n")
         for tuple in words_list:
-            file.write(f"{str(tuple[1])};{tuple[0]};;\n")
+            file.write(f"{str(tuple[1])};{tuple[0]};{random_color_string()};\n")
 
 if __name__ == "__main__":
     args = sys.argv
