@@ -1,8 +1,7 @@
 #!/usr/bin/python3
-import sys
+import argparse
 import re
 from typing import Any, List, Tuple
-from numbers import Number
 from utils import proper_name, random_color_string
 
 def open_and_split_file (filename: str) -> List[str]:
@@ -29,30 +28,40 @@ def frequency_dictionary (words: List[str]) -> dict:
             d[word] = 1
     return d
 
-def most_used_words (word_dict: dict, n: Number) -> List[Tuple[str, Number]]:
+def most_used_words (word_dict: dict, n: int) -> List[Tuple[str, int]]:
     return sorted(word_dict.items(), key=lambda item:item[1], reverse=True)[:n]
 
-def tuple_list_to_simple_list (tuple_list: List[Tuple[str, Number]]) -> List[str]:
+def tuple_list_to_simple_list (tuple_list: List[Tuple[str, int]]) -> List[str]:
     return [tuple[0] for tuple in tuple_list]
 
-def words_to_csv (words_list: List[Tuple[str, Number]], filename: str) -> None:
+def words_to_csv (words_list: List[Tuple[str, int]], filename: str) -> None:
     with open(filename + ".csv", "w") as file:
         file.write("\"weight\";\"word\";\"color\";\"url\"\n")
         for tuple in words_list:
             file.write(f"{str(tuple[1])};{tuple[0]};{random_color_string()};\n")
 
 if __name__ == "__main__":
-    args = sys.argv
     print("WordCloudGenerator!")
-    if len(args) > 1:
-        filename = args[1]
-        print(filename)
+    argParser = argparse.ArgumentParser()
+    argParser.add_argument("-i", "--input", type=str, help="txt file to create word cloud from")
+    argParser.add_argument("-s", "--stop", type=str, help="file with stop-words")
+    argParser.add_argument("-t", "--top", type=int, help="select top n words by frequency")
+    args = argParser.parse_args()
+    if args.input == None:
+        print("Error: No input file was specified.")
+    else:
+        filename = args.input
         stop_name = ""
-        if len(args) > 2:
-            stop_name = args[2]
+        if args.stop != None:
+            stop_name = args.stop
+        top = 100
+        if args.top != None:
+            top = args.top
+        print(f"File: {filename}")
         words = open_and_clean_file(filename, stop_name)
         print(f"{len(words)} words.")
         most_used = most_used_words(frequency_dictionary(words), 100)
-        print(most_used)
+        print(f"Top {top} words by frequency:")
+        print(tuple_list_to_simple_list(most_used))
         words_to_csv(most_used, proper_name(filename))
 
