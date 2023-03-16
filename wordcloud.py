@@ -43,7 +43,7 @@ def words_to_csv (words_list: List[Tuple[str, int]], filename: str) -> None:
 if __name__ == "__main__":
     print("WordCloudGenerator!")
     argParser = argparse.ArgumentParser()
-    argParser.add_argument("-i", "--input", type=str, help="txt file to create word cloud from")
+    argParser.add_argument("input", type=str, help="txt file to create word cloud from")
     argParser.add_argument("-s", "--stop", type=str, help="file with stop-words")
     argParser.add_argument("-t", "--top", type=int, help="select top n words by frequency")
     args = argParser.parse_args()
