@@ -48,7 +48,6 @@ if __name__ == "__main__":
     argParser.add_argument("-t", "--top", type=int, help="select top n words by frequency")
     argParser.add_argument("-i", "--tfidf", action="store_true", help="use TF-IDF as a frequency counter")
     args = argParser.parse_args()
-    print(args.tfidf)
     if args.input == None:
         print("Error: No input file was specified.")
     else:
