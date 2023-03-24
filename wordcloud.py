@@ -105,10 +105,6 @@ if __name__ == "__main__":
             words_to_csv(most_used, proper_name(args.input[0] + '_tf-idf'))
         else:
             for filename in args.input:
-                print(filename)
-                top = 100
-                if args.top != None:
-                    top = args.top
                 print(f"File: {filename}")
                 words = open_and_clean_file(filename, stop_name)
                 print(f"{len(words)} words.")
