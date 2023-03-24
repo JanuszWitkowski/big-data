@@ -37,11 +37,17 @@ def most_used_words (word_dict: dict, n: int) -> List[Tuple[str, Number]]:
 def tuple_list_to_simple_list (tuple_list: List[Tuple[str, Number]]) -> List[str]:
     return [tuple[0] for tuple in tuple_list]
 
-def words_to_csv (words_list: List[Tuple[str, Number]], filename: str) -> None:
-    with open(filename + ".csv", "w") as file:
-        file.write("\"weight\";\"word\";\"color\";\"url\"\n")
-        for tuple in words_list:
-            file.write(f"{str(tuple[1])};{tuple[0]};{random_color_string()};\n")
+def words_to_csv (words_list: List[Tuple[str, Number]], filename: str, with_color: bool) -> None:
+    if with_color:
+        with open(filename + ".csv", "w") as file:
+            file.write("\"weight\";\"word\";\"color\";\"url\"\n")
+            for tuple in words_list:
+                file.write(f"{str(int(tuple[1]))};{tuple[0]};{random_color_string()};\n")
+    else:
+        with open(filename + ".csv", "w") as file:
+            file.write("\"weight\";\"word\";\"color\";\"url\"\n")
+            for tuple in words_list:
+                file.write(f"{str(int(tuple[1]))};{tuple[0]};;\n")
 
 
 def dict_key_int (dict: dict, key: Any) -> int:
@@ -83,6 +89,7 @@ if __name__ == "__main__":
     argParser.add_argument("-s", "--stop", type=str, help="file with stop-words")
     argParser.add_argument("-t", "--top", type=int, help="select top n words by frequency")
     argParser.add_argument("-i", "--tfidf", action="store_true", help="use TF-IDF as a frequency counter; check for the first given file")
+    argParser.add_argument("-c", "--color", action="store_true", help="make csv file with random colors")
     args = argParser.parse_args()
 
     stop_name = ""
@@ -102,7 +109,7 @@ if __name__ == "__main__":
             most_used = most_used_words(tfidf_dictionary(main_doc, docs_dicts), top)
             print(f"Top {top} words by TF-IDF:")
             print(tuple_list_to_simple_list(most_used))
-            words_to_csv(most_used, proper_name(args.input[0] + '_tf-idf'))
+            words_to_csv(most_used, proper_name(args.input[0]) + '_tf-idf', args.color)
         else:
             for filename in args.input:
                 print(f"File: {filename}")
@@ -111,5 +118,5 @@ if __name__ == "__main__":
                 most_used = most_used_words(frequency_dictionary(words), top)
                 print(f"Top {top} words by frequency:")
                 print(tuple_list_to_simple_list(most_used))
-                words_to_csv(most_used, proper_name(filename))
+                words_to_csv(most_used, proper_name(filename), args.color)
 
