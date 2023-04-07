@@ -17,7 +17,7 @@ class BloomFilter:
         for i in range(self.k):
             self.array[self.hashes[i](x) % self.n] = 1
     
-    def check(self, x: str):
+    def check(self, x: str) -> bool:
         for i in range(self.k):
             if self.array[self.hashes[i](x) % self.n] == 0:
                 return False
