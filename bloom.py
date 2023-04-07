@@ -25,3 +25,7 @@ class BloomFilter:
         for i in range(self.n):
             self.array[i] = 0
 
+
+# def bloom_hamlet():
+#     #
+
