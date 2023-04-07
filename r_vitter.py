@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 import pandas as pd
-from random import random, randrange    # random.uniform
+from random import random, randrange    # random.uniform(a, b)
 
 class RVitter :
     def __init__(self, size_of_sample: int):
@@ -18,4 +18,16 @@ class RVitter :
     
     def get(self):
         return self.data
+    
+    def clear(self):
+        self.k = 0
+        for i in range(self.n):
+            self.data[i] = None
+
+
+if __name__ == "__main__":
+    rv = RVitter(40)
+    for i in range(10**3):
+        rv.step(i)
+    print(rv.get())
 
