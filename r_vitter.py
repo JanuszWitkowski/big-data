@@ -39,7 +39,6 @@ def vitter_bitcoin(size_of_sample: int):
 
     # Fetch the raw price data
     raw_price_data = cryptocompare.get_historical_price_day(
-    # raw_price_data = cryptocompare.get_historical_price_hour(
         ticker_symbol,
         currency,
         limit=limit_value,
@@ -49,8 +48,6 @@ def vitter_bitcoin(size_of_sample: int):
 
     # Convert the raw price data into a DataFrame
     daily_price_data = pd.DataFrame.from_dict(raw_price_data)
-    # print(raw_price_data)
-    # print(daily_price_data)
 
     # Set the time columns as index and convert it to datetime
     daily_price_data.set_index("time", inplace=True)
@@ -58,39 +55,39 @@ def vitter_bitcoin(size_of_sample: int):
     daily_price_data['datetimes'] = daily_price_data.index
     daily_price_data['datetimes'] = daily_price_data['datetimes'].dt.strftime(
         '%Y-%m-%d')
-    # print(daily_price_data)
 
-    # Plot the close price
+    # Vitter's R Algorithm
+    rv = RVitter(size_of_sample)
+    for _, row in daily_price_data.iterrows():
+        rv.step(row)
+    r_vitter_data = pd.DataFrame(rv.get())
+    r_vitter_data.sort_values(by='datetimes', inplace = True) 
+
+    plt.figure(figsize=(16, 14))
+
+    # Plot the whole data
     plt.subplot(2, 1, 1)
-    plt.figure(figsize=(15, 7))
     plt.plot(daily_price_data.close)
     # Set title and labels for the plot
     plt.title('BTC Close Price', fontsize=16)
     plt.xlabel('Date', fontsize=15)
     plt.ylabel('Price ($)', fontsize=15)
     plt.tick_params(axis='both', labelsize=15)
-    # Show the plot
-    plt.savefig('z22_r_vitter/btc_full.png')
+    # plt.savefig('z22_r_vitter/btc_full.png')
     # plt.show()
-
-    # Vitter's R Algorithm
-    rv = RVitter(size_of_sample)
-    for _, row in daily_price_data.iterrows():
-        rv.step(row)
-    r_vitter_data = pd.DataFrame(rv.get()).close
-    r_vitter_data.sort_values(by='time', inplace = True) 
 
     # Plot Vitter's R
     plt.subplot(2, 1, 2)
-    plt.figure(figsize=(15, 7))
-    plt.plot(r_vitter_data)
+    plt.plot(r_vitter_data.close)
     # Set title and labels for the plot
     plt.title('BTC Close Price with Random Sample', fontsize=16)
     plt.xlabel('Date', fontsize=15)
     plt.ylabel('Price ($)', fontsize=15)
     plt.tick_params(axis='both', labelsize=15)
-    # Show the plot
-    plt.savefig('z22_r_vitter/btc_vitter.png')
+    # plt.savefig('z22_r_vitter/btc_vitter.png')
+    # plt.show()
+
+    plt.savefig('z22_r_vitter/btc.png')
     # plt.show()
 
 
