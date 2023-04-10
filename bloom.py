@@ -4,14 +4,32 @@ from bitarray import bitarray
 from math import log, exp
 from wordcloud import open_and_clean_file
 
+# For a hash function to maintain its "uniform" distribution, we may truncate its output
+# (https://security.stackexchange.com/questions/97377/secure-way-to-shorten-a-hash)
+# We could also use modulo operation (%n, as below). In that case, make sure len(h(x))/n > 2^64
+# (https://crypto.stackexchange.com/questions/21006/security-concern-about-reducing-hash-value-using-modulo-operation)
+# NOTE: It turns out the number of FPs is smaller when using mmh3.hash instead of mmh3.hash128 xD
+
 class BloomFilter:
     def __init__(self, number_of_hashes: int, bitarray_length: int):
         self.k = number_of_hashes
         self.n = bitarray_length
-        self.hashes = [(lambda x: mmh3.hash(x, i ** 2, signed=False)) for i in range(number_of_hashes)]
         self.array = bitarray(bitarray_length)
         for i in range(bitarray_length):
             self.array[i] = 0
+
+        self.hashes = [
+            (lambda x: 
+                (mmh3.hash(x, i ** 2, signed=False)) 
+                # (mmh3.hash(x, i ** 2)) 
+                # (mmh3.hash64(x, i ** 2, signed=False)[0]) 
+                # (mmh3.hash64(x, i ** 2, signed=False)[1]) 
+                # (mmh3.hash64(x, i ** 2)[1])
+                # (mmh3.hash128(x, i ** 2, signed=False)) 
+                # (mmh3.hash128(x, i ** 2)) 
+            % self.n)
+             for i in range(number_of_hashes)]
+        
     
     def add(self, x: str):
         for i in range(self.k):
@@ -19,7 +37,7 @@ class BloomFilter:
     
     def check(self, x: str) -> bool:
         for i in range(self.k):
-            if self.array[self.hashes[i](x) % self.n] == 0:
+            if self.array[self.hashes[i](x)] == 0:
                 return False
         return True
     
@@ -46,6 +64,7 @@ def bloom_hamlet(unique_words_as_length: bool):
     dic = dict()
     # Check false-positives
     fp_ctr = 0
+    fp_words = ""
     for word in words:
         if not bf.check(word):
             bf.add(word)
@@ -53,10 +72,12 @@ def bloom_hamlet(unique_words_as_length: bool):
         else:
             if word in dic:
                 dic[word] += 1
-            else:
-                # False-Positive
+            else:       # False-Positive
                 fp_ctr += 1
+                fp_words += word + " "
+                # bf.add(word)    # No need for adding
                 dic[word] = 1
+    print(fp_words)
     print("----------------------------------------")
     print(f"{k} hashes, {n} bits of BloomFilter array")
     print(f"Number of False-Positives: {fp_ctr}")
