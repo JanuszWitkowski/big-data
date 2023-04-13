@@ -10,22 +10,30 @@ class RVitter :
         self.k = 0
         self.n = size_of_sample
         self.data = [None for _ in range(size_of_sample)]
+        self.changes = [None for _ in range(size_of_sample)]
     
     def step(self, elem):
         self.k += 1
         if self.k <= self.n:
             self.data[self.k - 1] = elem
+            self.changes[self.k - 1] = self.k
         else:
             if random() < self.n/self.k:
-                self.data[randrange(self.n)] = elem
+                idx = randrange(self.n)
+                self.data[idx] = elem
+                self.changes[idx] = self.k
     
     def get(self):
         return self.data
+    
+    def show_changes(self):
+        return self.changes
     
     def clear(self):
         self.k = 0
         for i in range(self.n):
             self.data[i] = None
+            self.changes[i] = None
 
 
 
@@ -62,6 +70,7 @@ def vitter_bitcoin(size_of_sample: int):
         rv.step(row)
     r_vitter_data = pd.DataFrame(rv.get())
     r_vitter_data.sort_values(by='datetimes', inplace = True) 
+    print(rv.show_changes())
 
     plt.figure(figsize=(16, 14))
 
