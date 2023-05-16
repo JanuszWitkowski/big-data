@@ -18,17 +18,25 @@ class BloomFilter:
         for i in range(bitarray_length):
             self.array[i] = 0
 
-        self.hashes = [
-            (lambda x: 
-                (mmh3.hash(x, i ** 2, signed=False)) 
-                # (mmh3.hash(x, i ** 2)) 
-                # (mmh3.hash64(x, i ** 2, signed=False)[0]) 
-                # (mmh3.hash64(x, i ** 2, signed=False)[1]) 
-                # (mmh3.hash64(x, i ** 2)[1])
-                # (mmh3.hash128(x, i ** 2, signed=False)) 
-                # (mmh3.hash128(x, i ** 2)) 
-            % self.n)
-             for i in range(number_of_hashes)]
+        # self.hashes = [
+        #     (lambda x: 
+        #         (mmh3.hash(x, i ** 2, signed=False)) 
+        #         # (mmh3.hash(x, i ** 2)) 
+        #         # (mmh3.hash64(x, i ** 2, signed=False)[0]) 
+        #         # (mmh3.hash64(x, i ** 2, signed=False)[1]) 
+        #         # (mmh3.hash64(x, i ** 2)[1])
+        #         # (mmh3.hash128(x, i ** 2, signed=False)) 
+        #         # (mmh3.hash128(x, i ** 2)) 
+        #     % self.n)
+        #      for i in range(number_of_hashes)]
+        self.hashes = [h for h in map(lambda s: lambda x:
+                                      mmh3.hash(key=x, seed=s, signed=False)
+                                    #   mmh3.hash128(x, i ** 2)
+                                    % self.n,
+                                [i ** 2 for i in range(number_of_hashes)]
+        )]
+        print([h("test") for h in self.hashes])
+        # print(type(self.hashes))
         
     
     def add(self, x: str):
