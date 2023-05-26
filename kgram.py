@@ -24,5 +24,5 @@ if __name__ == "__main__":
     print(k_grams(li, k))
     print(len(k_grams(li, k)))
     print(min_k_gram_hash(li, mmh3.hash, k))
-    print(k_gram_min_hashes(li, hs, k))
+    print(k_gram_minHashes(li, hs, k))
     print("Hello World!")

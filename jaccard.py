@@ -16,9 +16,11 @@ def jaccard_estimate(minHashesA: List[int], minHashesB: List[int]) -> Number:
     return len([m for i, m in enumerate(minHashesA) if minHashesA[i] == minHashesB[i]]) / len(minHashesA)
 
 
+
 DIR_NAME = "chapters" + "/"
 # STOP_NAMES = "Szekspir/stop_words_english.txt"
 STOP_NAMES = ""
+
 
 if __name__ == "__main__":
     print("Jaccard")
