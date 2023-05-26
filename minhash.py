@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 from typing import Any, List, Callable
-import mmh3
 
 def minHash(L: List[Any], hs: List[Callable[[Any], int]]) -> List[int]:
     # return [min([h(x) for x in L]) for h in hs]
@@ -8,6 +7,8 @@ def minHash(L: List[Any], hs: List[Callable[[Any], int]]) -> List[int]:
 
 
 if __name__ == "__main__":
+    print("MINHASH TEST")
+    import mmh3
     n = 10
     m = 50
     s = "test"

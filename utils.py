@@ -1,4 +1,5 @@
 import random
+import os
 
 color_values = '0123456789abcdef'
 
@@ -18,3 +19,9 @@ def random_color_string () -> str:
     for _ in range(6):
         str = str + random.choice(color_values)
     return str
+
+def get_files(path: str):
+    # for file in os.listdir(path):
+    #     if os.path.isfile(os.path.join(path, file)):
+    #         yield file
+    return os.listdir(path)
