@@ -3,7 +3,8 @@ from typing import Any, List, Callable
 import mmh3
 
 def minHash(L: List[Any], hs: List[Callable[[Any], int]]) -> List[int]:
-    return [min([h(x) for x in L]) for h in hs]
+    # return [min([h(x) for x in L]) for h in hs]
+    return [min([h(str(x)) for x in L]) for h in hs]
 
 
 if __name__ == "__main__":

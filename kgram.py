@@ -5,8 +5,8 @@ def k_grams(li: list, k: int) -> List[list]:
     return [li[i:(i+k)] for i in range(len(li) - k + 1)]
 
 def min_k_gram_hash(li: list, hash: Callable[[Any], int], k: int) -> List[int]:
-    # print([hash(bytes(x)) for x in k_grams(li, k)])
-    return min([hash(bytes(x)) for x in k_grams(li, k)])
+    # return min([hash(bytes(x)) for x in k_grams(li, k)])
+    return min([hash(str(x)) for x in k_grams(li, k)])
 
 
 if __name__ == "__main__":
