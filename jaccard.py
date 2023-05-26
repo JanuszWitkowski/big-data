@@ -14,28 +14,30 @@ def jaccard_estimate(minHashesA: List[int], minHashesB: List[int]) -> Number:
         return -1
     # print(f"{len([m for i, m in enumerate(minHashesA) if minHashesA[i] == minHashesB[i]])}, {len(minHashesA)}")
     return len([m for i, m in enumerate(minHashesA) if minHashesA[i] == minHashesB[i]]) / len(minHashesA)
+    # return float(len(set(minHashesA).intersection(minHashesB))) / float(len(set(minHashesA).union(minHashesB)))
 
 
 
 DIR_NAME = "chapters" + "/"
 # STOP_NAMES = "Szekspir/stop_words_english.txt"
-STOP_NAMES = ""
+STOP_WORDS = ""
 
 
 if __name__ == "__main__":
     print("Jaccard")
     import mmh3
     hs = [64, 128, 256]
-    k = 7
+    k = 3
     hashes = [[hsh for hsh in map(lambda i: lambda x: mmh3.hash(key=x, seed=i), [i**2 for i in range(h)])] for h in hs]
     filenames = get_files(DIR_NAME)
+    filenames.sort()
 
     print("Opening and cleaning files...")
-    docs = [open_and_clean_file(DIR_NAME + filename, STOP_NAMES) for filename in filenames]
+    docs = [open_and_clean_file(DIR_NAME + filename, STOP_WORDS, False) for filename in filenames]
     names = [proper_name(filename) for filename in filenames]
 
     print("Getting minHashes...")
-    ms = get_docs_minHashes(docs, hashes[0], k)
+    ms = get_docs_minHashes(docs, hashes[2], k)
     n = len(ms)
 
     print("Calculating...")
@@ -44,6 +46,8 @@ if __name__ == "__main__":
 
     print(names)
     for i, _ in enumerate(jaccards):
-        print(f"{infos[i]}: {jaccards[i]}")
+        # print(f"{infos[i]}: {jaccards[i]}")
+        print(f"{jaccards[i]} | {infos[i]}")
     # print(docs)
+    # print(names)
 

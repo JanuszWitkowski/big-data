@@ -12,14 +12,14 @@ def open_and_split_file (filename: str) -> List[str]:
         words = file.read().lower().split()
     return words
 
-def open_and_clean_file (filename: str, stop_name: str) -> List[str]:
+def open_and_clean_file (filename: str, stop_name: str, remove_short: bool) -> List[str]:
     stop_words = []
     if stop_name != "":
         stop_words = open_and_split_file(stop_name)
     with open(filename, 'r') as file:
         words = [word for word in 
                  re.sub("[^a-z0-9]+", " ", file.read().lower().replace('\n', ' ').replace('\r', ' ')).split()
-                 if len(word) > 2 and word not in stop_words]
+                 if ((not remove_short) or len(word) > 2) and word not in stop_words]
     return words
 
 def frequency_dictionary (words: List[str]) -> dict:
@@ -64,7 +64,7 @@ def how_many_in_dictionaries (word: str, dicts: List[dict]) -> int:
     return ctr
 
 def documents_dictionaries (filenames: List[str], stop_name: str):
-    return [frequency_dictionary(open_and_clean_file(filename, stop_name)) for filename in filenames]
+    return [frequency_dictionary(open_and_clean_file(filename, stop_name, True)) for filename in filenames]
 
 def calculate_tf (word: str, doc_dict: dict) -> Number:
     return dict_key_int(doc_dict, word)
@@ -113,7 +113,7 @@ if __name__ == "__main__":
         else:
             for filename in args.input:
                 print(f"File: {filename}")
-                words = open_and_clean_file(filename, stop_name)
+                words = open_and_clean_file(filename, stop_name, True)
                 print(f"{len(words)} words.")
                 most_used = most_used_words(frequency_dictionary(words), top)
                 print(f"Top {top} words by frequency:")
