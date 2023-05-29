@@ -34,17 +34,7 @@ def jaccard_theory(docA: List[list], docB: List[list]) -> Number:
 
 def kmeans(minHashes: List[List[int]], names: List[str], k: int):
     hash_size = 64
-    # filenames = os.listdir('chapters')
-    # minHashes = []
-    
-    # for i in tqdm(range(len(filenames))):
-    #     book = open(f"chapters/{filenames[i]}", 'r', encoding='utf-8').read().lower()
-    #     book = re.sub(r'[^a-z0-9]+', ' ', book).strip()
-    #     hash_funcs = generate_hash_functions(hash_size)
-    #     kgrams = split_into_kgrams(book, k)
-    #     minHashes.append(min_hash(kgrams, hash_funcs))
-    
-    num_clusters = 7
+    num_clusters = k
     kmeans = KMeans(n_clusters=num_clusters)
     kmeans.fit(minHashes)
     cluster_labels = kmeans.labels_
