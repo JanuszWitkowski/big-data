@@ -5,6 +5,7 @@ from wordcloud import open_and_clean_file
 from utils import get_files, proper_name
 from typing import Any, List, Callable
 from numbers import Number
+from sklearn.cluster import KMeans
 
 def get_docs_k_grams(docs: List[str], k: int) -> List[List[list]]:
     return [k_grams(doc, k) for doc in docs]
@@ -30,6 +31,28 @@ def jaccard_theory(docA: List[list], docB: List[list]) -> Number:
     setA = set([str(doc) for doc in docA])
     setB = set([str(doc) for doc in docB])
     return len(setA.intersection(setB)) / len(setA.union(setB))
+
+def kmeans(minHashes: List[List[int]], names: List[str], k: int):
+    hash_size = 64
+    # filenames = os.listdir('chapters')
+    # minHashes = []
+    
+    # for i in tqdm(range(len(filenames))):
+    #     book = open(f"chapters/{filenames[i]}", 'r', encoding='utf-8').read().lower()
+    #     book = re.sub(r'[^a-z0-9]+', ' ', book).strip()
+    #     hash_funcs = generate_hash_functions(hash_size)
+    #     kgrams = split_into_kgrams(book, k)
+    #     minHashes.append(min_hash(kgrams, hash_funcs))
+    
+    num_clusters = 7
+    kmeans = KMeans(n_clusters=num_clusters)
+    kmeans.fit(minHashes)
+    cluster_labels = kmeans.labels_
+    labels_dict = {label: [] for label in cluster_labels}
+    for i, label in enumerate(cluster_labels):
+        labels_dict[label].append(names[i])
+    for key in labels_dict:
+        print(labels_dict[key])
 
 
 
@@ -74,4 +97,5 @@ if __name__ == "__main__":
         print(f"{infos[i]}:\t{empirum[i]} | {theory[i]} | {sanity_check[i]}")
     # print(docs)
     # print(names)
+    kmeans(ms, names, k)
 
