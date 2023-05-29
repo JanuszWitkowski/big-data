@@ -61,8 +61,8 @@ if __name__ == "__main__":
     filenames.sort()
 
     print("Opening and cleaning files...")
-    # docs = [open_and_clean_file(DIR_NAME + filename, STOP_WORDS, False) for filename in filenames]
-    docs = [concatenate_strings(open_and_clean_file(DIR_NAME + filename, STOP_WORDS, False)) for filename in filenames]
+    docs = [open_and_clean_file(DIR_NAME + filename, STOP_WORDS, False) for filename in filenames]
+    # docs = [concatenate_strings(open_and_clean_file(DIR_NAME + filename, STOP_WORDS, False)) for filename in filenames]
     names = [proper_name(filename) for filename in filenames]
 
     print("Getting k-grams...")
