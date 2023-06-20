@@ -44,7 +44,7 @@ def matrix_A():
 
 
 if __name__ == "__main__":
-    print("---[ ex37a ]---")
+    print("---[ ex49a ]---")
     base = random_ortonormal_base()
     with open(RESULTS_DIR + "plane_vectors.txt", 'w') as f:
         for vec in base:
@@ -59,7 +59,7 @@ if __name__ == "__main__":
     plt.savefig(RESULTS_DIR + "plane_graph.png", dpi=300)
     plt.close()
 
-    print("---[ ex37b ]---")
+    print("---[ ex49b ]---")
     A = matrix_A()
     with open(RESULTS_DIR + "A_matrix.txt", 'w') as f:
         for row in A:
