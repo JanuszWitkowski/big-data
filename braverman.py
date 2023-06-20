@@ -3,7 +3,7 @@ import random
 import numpy as np
 import matplotlib.pyplot as plt
 from math import sqrt
-from scipy.stats import chisquare
+from scipy.stats import chisquare, chi2
 
 class SlidingWindow:
     def __init__(self, k: int):
@@ -12,17 +12,18 @@ class SlidingWindow:
         self.c = 0
         self.elem = None
         # self.sample = []
+        self.freq = []
         self.treewidth = "Twinwidth"
     
     def read(self, x):
         self.n += 1
         if random.random() < 1.0/float(self.n):
         # if random.random() < 1.0/sqrt(self.n):
-        # if random.random() < 1.0/():
             self.elem = x
             self.c = self.n
             # self.sample.append(self.c)
             # self.sample.append(self.elem)
+        self.freq.append(self.n - self.c + 1)
         self.n %= self.k
     
     def get(self):
@@ -30,6 +31,9 @@ class SlidingWindow:
     
     # def get_sample(self):
     #     return self.sample
+
+    def frequencies(self):
+        return self.freq
     
     def clear(self):
         self.n = 0
@@ -57,8 +61,26 @@ def check_correctness(n: int, k: int, iter: int):
                 sample.append(single_sample[1])
         # sample += sw.get_sample()
         # sw.clear()
-    print(sample)
-    histogram(sample, k)
+
+    # print(sample)
+    # histogram(sample, k)
+
+    # chi2, p = chisquare(sample)
+    # chi2, p = chisquare(sample, ddof=4)
+    # print(chi2)
+    # print(p)
+    # print(chi2.ppf(sample, 4))
+    freq_dict = dict()
+    for i in range(1, k+1):
+        freq_dict[i] = 0
+    for j in sw.frequencies():
+        freq_dict[j] += 1
+    frequencies = list(freq_dict.values())
+    print(frequencies)
+    chi2, p = chisquare(frequencies)
+    # chi2, p = chisquare(frequencies, ddof=4)
+    print(chi2)
+    print(p)
 
 
 
