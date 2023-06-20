@@ -12,11 +12,11 @@ class SlidingWindow:
         self.c = 0
         self.elem = None
         # self.sample = []
-        self.treewidth = "Bojko baza"
+        self.treewidth = "Twinwidth"
     
     def read(self, x):
         self.n += 1
-        if random.random() < 1.0/self.n:
+        if random.random() < 1.0/float(self.n):
         # if random.random() < 1.0/sqrt(self.n):
         # if random.random() < 1.0/():
             self.elem = x
@@ -38,33 +38,34 @@ class SlidingWindow:
         # self.sample = []
 
 
-def histogram(sample: list, n: int):
+def histogram(sample: list, b: int):
     # plt.figure(figsize=(16, 8))
-    plt.hist(sample, density=True, bins=n)
+    plt.hist(sample, density=True, bins=b)
     plt.savefig("braverman/histogram.png")
 
 
 def check_correctness(n: int, k: int, iter: int):
     sw = SlidingWindow(k)
-    data = [i for i in range(n)]
+    # data = [i+1 for i in range(n)]
     sample = []
     for _ in range(iter):
-        for j, x in enumerate(data):
-            sw.read(x)
-            if j % (k+1) == 0:
-                print(f"x={x}; j={j}; sample={sw.get()}")
-                sample.append(sw.get()[1])
+        for j in range(1, n+1):
+            sw.read(j)
+            if j % k == 0:
+                # print(f"x={x}; j={j}; sample={sw.get()}")
+                single_sample = sw.get()
+                sample.append(single_sample[1])
         # sample += sw.get_sample()
-        sw.clear()
+        # sw.clear()
     print(sample)
     histogram(sample, k)
 
 
 
 if __name__ == "__main__":
-    n = 100
+    n = 10000
     k = 5
-    iter = 100
+    iter = 1
     check_correctness(n, k, iter)
 
 
