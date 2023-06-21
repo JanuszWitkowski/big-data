@@ -31,6 +31,9 @@ def frequency_dictionary (words: List[str]) -> dict:
             d[word] = 1
     return d
 
+def sort_words(word_dict: dict) -> List[Tuple[str, Number]]:
+    return sorted(word_dict.items(), key=lambda item:item[1], reverse=True)
+
 def most_used_words (word_dict: dict, n: int) -> List[Tuple[str, Number]]:
     return sorted(word_dict.items(), key=lambda item:item[1], reverse=True)[:n]
 
