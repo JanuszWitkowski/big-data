@@ -27,7 +27,7 @@ if __name__ == "__main__":
 
     omega = set(omega)
     n = len(omega)
-    print(n)
+    print(f"n={n}")
     vectors = random_vectors(n)
     scalar_products = {drama: [] for drama in dramas}
 
@@ -44,5 +44,5 @@ if __name__ == "__main__":
     for drama_1 in dramas:
         for drama_2 in dramas:
             if drama_1 < drama_2:
-                print("{},{}:   {}".format(drama_1,drama_2,cos_distance(scalar_products[drama_1],scalar_products[drama_2])))
+                print("{} vs {}:\t{}".format(drama_1,drama_2,cos_distance(scalar_products[drama_1],scalar_products[drama_2])))
 

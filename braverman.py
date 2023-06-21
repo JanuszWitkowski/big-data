@@ -3,7 +3,8 @@ import random
 import numpy as np
 import matplotlib.pyplot as plt
 from math import sqrt
-from scipy.stats import chisquare, chi2
+from scipy.stats import chisquare, chi2, chi2_contingency
+from collections import Counter
 
 class SlidingWindow:
     def __init__(self, k: int):
@@ -64,24 +65,41 @@ def check_correctness(n: int, k: int, iter: int):
         # sw.clear()
 
     # print(sample)
-    # histogram(sample, k)
+    histogram(sample, k)
 
     # chi2, p = chisquare(sample)
     # chi2, p = chisquare(sample, ddof=4)
     # print(chi2)
     # print(p)
     # print(chi2.ppf(sample, 4))
-    freq_dict = dict()
-    for i in range(1, k+1):
-        freq_dict[i] = 0
-    for j in sw.frequencies():
-        freq_dict[j] += 1
-    frequencies = list(freq_dict.values())
-    print(frequencies)
-    chi2, p = chisquare(frequencies)
-    # chi2, p = chisquare(frequencies, ddof=4)
-    print(chi2)
-    print(p)
+    # freq_dict = dict()
+    # for i in range(1, k+1):
+    #     freq_dict[i] = 0
+    # for j in sw.frequencies():
+    #     freq_dict[j] += 1
+    # frequencies = list(freq_dict.values())
+    # print(frequencies)
+    # chi2, p = chisquare(frequencies)
+    # # chi2, p = chisquare(frequencies, ddof=4)
+    # print(chi2)
+    # print(p)
+
+    p_wanted = 0.01
+    threshold = 11.345
+    counter = Counter(sample)
+    frequencies = [counter[i] for i in range(1, k+1)]
+    _, p, _, _ = chi2_contingency(frequencies)
+    print("p=" + str(p))
+    if p <= p_wanted:
+        print("H0 rejected 1")
+    else:
+        print("H0 approved 1")
+    chi2result, _ = chisquare(frequencies, ddof=4)
+    print(f"chi2result={chi2result}")
+    if threshold < chi2result:
+        print("H0 rejected 2")
+    else:
+        print("H0 approved 2")
 
 
 

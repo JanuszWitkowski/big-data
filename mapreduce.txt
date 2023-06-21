@@ -1,0 +1,16 @@
+map(L[item]):
+    foreach x in L:
+        ...
+        emit(key(x), value(x))
+
+reduce(key, L'):
+    foreach y in L':
+        ...
+        emit(key, stat(L'))
+
+
+itemy -> mappery -> zbieracz -> reducery -> statystyk
+
+np. policzyć deg(v) dla v z grafu.
+map: emit (v, 1), (u, 1)
+reduce: (v, |L'|)
