@@ -47,7 +47,7 @@ class SlidingWindow:
 def histogram(sample: list, b: int):
     # plt.figure(figsize=(16, 8))
     plt.hist(sample, density=True, bins=b)
-    plt.savefig("braverman/histogram.png")
+    plt.savefig("z25_braverman/histogram.png")
 
 
 def check_correctness(n: int, k: int, iter: int):

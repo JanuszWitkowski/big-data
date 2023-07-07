@@ -31,5 +31,5 @@ if __name__ == "__main__":
 
         plt.figure(figsize=(16,8))
         plt.hist(distances_normed, bins=100)
-        plt.savefig("hypercube/" + "k" + str(k) + "_n" + str(n) + ".png", dpi=300)
+        plt.savefig("z44_hypercube/" + "k" + str(k) + "_n" + str(n) + ".png", dpi=300)
 

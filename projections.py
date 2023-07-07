@@ -7,7 +7,7 @@ from skspatial.objects import Vector, Plane, Point
 LOW = -1
 HIGH = 1
 COORDS = [LOW, HIGH]
-RESULTS_DIR = "projections/"
+RESULTS_DIR = "z49_projections/"
 
 # L = [li1+[i] for i in [-1,1] for li1 in [li2+[j] for j in [-1,1] for li2 in [[-1],[1]]]]
 def matrix_L():
